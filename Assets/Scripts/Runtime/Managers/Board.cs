@@ -13,6 +13,7 @@ public class Board : MonoBehaviour
     private void Awake()
     {
         TouchEvents.OnElementTapped += TileTapped;
+        PrepareTiles();
     }
 
     private void OnDestroy()

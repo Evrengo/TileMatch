@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class TouchManager : MonoBehaviour
 {
-    [SerializeField] Camera cam;
-    [SerializeField] string collisionTag="Untagged";
+    [SerializeField] private Camera cam;
     bool _canTouch;
 
     void Start()
