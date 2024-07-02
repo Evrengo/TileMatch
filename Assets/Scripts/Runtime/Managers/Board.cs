@@ -10,6 +10,15 @@ public class Board : MonoBehaviour
     [Header("Scene Dependency")]
     [SerializeField] Transform tileParent;
 
+    private void Awake()
+    {
+        TouchEvents.OnElementTapped += TileTapped;
+    }
+
+    private void OnDestroy()
+    {
+        TouchEvents.OnElementTapped -= TileTapped;
+    }
 
     public Tile[] Tiles { get; private set; }
 
@@ -22,5 +31,10 @@ public class Board : MonoBehaviour
         {
             Tiles[i]=Instantiate(tilePrefab, tileParent);
         }
+    }
+
+    void TileTapped(ITouchable touchable)
+    {
+        var tappedTile =touchable.gameObject.GetComponent<Tile>();
     }
 }

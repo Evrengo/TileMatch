@@ -5,20 +5,13 @@ using UnityEngine;
 public class TouchManager : MonoBehaviour
 {
     [SerializeField] Camera cam;
-    [SerializeField] string collisionTag;
+    [SerializeField] string collisionTag="Untagged";
     bool _canTouch;
 
     void Start()
     {
         _canTouch = false;
         StartCoroutine(WaitForTouch_Cor());
-    }
-    
-    IEnumerator WaitForTouch_Cor()
-    {
-        yield return new WaitForSeconds(1.5f);
-
-        _canTouch = true;
     }
 
     void Update()
@@ -29,29 +22,38 @@ public class TouchManager : MonoBehaviour
         }
     }
     
-    private void GetTouch(Vector3 pos)
+    void GetTouch(Vector3 pos)
     {
         if (Input.GetMouseButtonDown(0))
         {
             var hit = Physics2D.OverlapPoint(cam.ScreenToWorldPoint(pos));
             if (CanTouch(hit))
             {
-                //var selectedCard = hit.gameObject.GetComponent<Card>();
-                //TouchEvents.OnCardTapped?.Invoke(selectedCard);
+                if(hit.gameObject.TryGetComponent(out ITouchable selectedElement))
+                {
+                    TouchEvents.OnElementTapped?.Invoke(selectedElement);
+                }
             }
             else
             {
-                //TouchEvents.OnEmptyTapped?.Invoke();
+                TouchEvents.OnEmptyTapped?.Invoke();
             }
         }
     }
 
-    private bool CanTouch(Collider2D hit)
+    bool CanTouch(Collider2D hit)
     {
-        return hit != null && hit.CompareTag(collisionTag);
+        return hit != null;
     }
 
-   
+    IEnumerator WaitForTouch_Cor()
+    {
+        yield return new WaitForSeconds(1.5f);
+
+        _canTouch = true;
+    }
+
+
 }
 
 
@@ -64,5 +66,5 @@ public static class TouchEvents
 
 public interface ITouchable
 {
-
+    GameObject gameObject { get; }
 }
