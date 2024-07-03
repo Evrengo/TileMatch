@@ -10,7 +10,9 @@ public class Board : MonoBehaviour
     [Header("Scene Dependency")]
     [SerializeField] Transform tileParent;
 
-    private void Awake()
+    public Tile[] Tiles { get; private set; }
+
+    void Awake()
     {
         TouchEvents.OnElementTapped += TileTapped;
         PrepareTiles();
@@ -20,8 +22,6 @@ public class Board : MonoBehaviour
     {
         TouchEvents.OnElementTapped -= TileTapped;
     }
-
-    public Tile[] Tiles { get; private set; }
 
     void PrepareTiles()
     {

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TouchManager : MonoBehaviour
 {
-    [SerializeField] private Camera cam;
+    [SerializeField] Camera cam;
     bool _canTouch;
 
     void Start()
