@@ -12,13 +12,13 @@ public class LevelManager : MonoBehaviour
         Load();
 
         LevelEvents.OnLevelWin += Save_Callback;
-        LevelEvents.OnLevelDataNeeded += LevelDataNeeded_CallBack;
+        LevelEvents.OnLevelDataNeeded += LevelDataNeeded_Callback;
     }
 
     private void OnDestroy()
     {
         LevelEvents.OnLevelWin -= Save_Callback;
-        LevelEvents.OnLevelDataNeeded -= LevelDataNeeded_CallBack;
+        LevelEvents.OnLevelDataNeeded -= LevelDataNeeded_Callback;
     }
 
     void ReadLevels()
