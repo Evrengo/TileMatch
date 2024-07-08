@@ -10,6 +10,15 @@ public class LevelManager : MonoBehaviour
     {
         ReadLevels();
         Load();
+
+        LevelEvents.OnLevelWin += Save_Callback;
+        LevelEvents.OnLevelDataNeeded += LevelDataNeeded_CallBack;
+    }
+
+    private void OnDestroy()
+    {
+        LevelEvents.OnLevelWin -= Save_Callback;
+        LevelEvents.OnLevelDataNeeded -= LevelDataNeeded_CallBack;
     }
 
     void ReadLevels()
@@ -43,12 +52,17 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    void Save(CompleteData completeData)
+    void Save_Callback(CompleteData completeData)
     {
         _levelSaveData.Data[completeData.Index +1].isUnlocked = true;
         _levelSaveData.Data[completeData.Index].highScore = completeData.Score;
 
         DataHandler.Save(_levelSaveData, DataKeys.LevelScoreDataKey);
+    }
+
+    void LevelDataNeeded_Callback()
+    {
+        LevelEvents.OnSpawnLevelSelectionButtons?.Invoke(_levelSaveData.Data);
     }
 }
 
