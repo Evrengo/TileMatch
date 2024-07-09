@@ -1,11 +1,25 @@
 using DG.Tweening;
+using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class LevelsButton : MonoBehaviour
+public class LevelsButton : MonoBehaviour  
 {
-   void ClickMeAnimation()
+    [SerializeField] Button button;
+
+     void OnEnable()
+    {
+        ClickMeAnimation();
+        button.onClick.AddListener(OnClick);
+    }
+
+     void OnDisable()
+    {
+        button.onClick.RemoveListener(OnClick);
+    }
+    void ClickMeAnimation()
     {
         DOTween.Sequence()
             .Append(transform.DOPunchScale(Vector3.one * .15f, .5f).SetEase(Ease.InOutExpo))
@@ -17,4 +31,15 @@ public class LevelsButton : MonoBehaviour
             })
             .SetId(transform);
     }
+    void OnClick() 
+    { 
+
+    }
+#if UNITY_EDITOR
+    [Button]
+    void FindButton()
+    {
+        button = GetComponent<Button>();
+    }
+        #endif
 }
