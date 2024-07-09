@@ -32,8 +32,8 @@ public class LevelsButton : MonoBehaviour
             .SetId(transform);
     }
     void OnClick() 
-    { 
-
+    {
+        UIEvents.OpenLevelsPanel?.Invoke();
     }
 #if UNITY_EDITOR
     [Button]
