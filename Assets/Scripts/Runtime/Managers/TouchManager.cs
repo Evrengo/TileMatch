@@ -20,7 +20,7 @@ public class TouchManager : MonoBehaviour
             GetTouch(Input.mousePosition);
         }
     }
-    
+
     void GetTouch(Vector3 pos)
     {
         if (Input.GetMouseButtonDown(0))
@@ -28,7 +28,7 @@ public class TouchManager : MonoBehaviour
             var hit = Physics2D.OverlapPoint(cam.ScreenToWorldPoint(pos));
             if (CanTouch(hit))
             {
-                if(hit.gameObject.TryGetComponent(out ITouchable selectedElement))
+                if (hit.gameObject.TryGetComponent(out ITouchable selectedElement))
                 {
                     TouchEvents.OnElementTapped?.Invoke(selectedElement);
                 }
@@ -50,18 +50,14 @@ public class TouchManager : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
 
         _canTouch = true;
-    }
-
-
+    } 
 }
-
 
 public static class TouchEvents
 {
     public static Action<ITouchable> OnElementTapped;
     public static Action OnEmptyTapped;
 }
-
 
 public interface ITouchable
 {

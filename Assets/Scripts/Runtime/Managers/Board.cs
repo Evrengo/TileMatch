@@ -1,24 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Board : MonoBehaviour
 {
     [Header("Project Dependency")]
     [SerializeField] Tile tilePrefab;
-
+    
     [Header("Scene Dependency")]
     [SerializeField] Transform tileParent;
-
+    
     public Tile[] Tiles { get; private set; }
 
     void Awake()
     {
         TouchEvents.OnElementTapped += TileTapped;
+        
         PrepareTiles();
     }
 
-    private void OnDestroy()
+    void OnDestroy()
     {
         TouchEvents.OnElementTapped -= TileTapped;
     }
@@ -26,16 +25,16 @@ public class Board : MonoBehaviour
     void PrepareTiles()
     {
         var tileCount = 5;
-        Tiles = new Tile[tileCount];//todo: change with level tile amount
+        Tiles = new Tile[tileCount]; //todo: change with level tile amount
 
-        for (int i = 0; i < tileCount; i++) 
+        for (int i = 0; i < tileCount; i++)
         {
-            Tiles[i]=Instantiate(tilePrefab, tileParent);
+            Tiles[i] = Instantiate(tilePrefab, tileParent);
         }
     }
 
     void TileTapped(ITouchable touchable)
     {
-        var tappedTile =touchable.gameObject.GetComponent<Tile>();
+        var tappedTile = touchable.gameObject.GetComponent<Tile>();
     }
 }

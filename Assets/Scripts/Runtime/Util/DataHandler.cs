@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public static class DataHandler 
+public static class DataHandler
 {
-  public static void Save<T>(T saveData, string key)
+    public static void Save<T>(T saveData, string key)
     {
         var data = JsonUtility.ToJson(saveData);
         PlayerPrefs.SetString(key, data);
@@ -20,9 +18,7 @@ public static class DataHandler
     public static void Delete(string key)
     {
         if (HasData(key))
-        {
             PlayerPrefs.DeleteKey(key);
-        }
     }
 
     public static bool HasData(string key)

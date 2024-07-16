@@ -1,4 +1,4 @@
-public struct CompleteData 
+public struct CompleteData
 {
     public int Score;
     public int Index;

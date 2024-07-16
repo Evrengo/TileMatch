@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb2139a59abec0c428038584bc734e61, type: 3}
+  m_Script: {fileID: 11500000, guid: d2771574564c12c499cc890c4c44051f, type: 3}
   m_Name: GameSceneAsset
   m_EditorClassIdentifier: 
-  ID: 
+  ID: GameScene
   Asset:
-    sceneAsset: {fileID: 0}
-    sceneName: 
+    sceneAsset: {fileID: 102900000, guid: 99c9720ab356a0642a771bea13969a05, type: 3}
+    sceneName: GameScene
