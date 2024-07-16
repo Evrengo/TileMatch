@@ -12,14 +12,16 @@ public class LevelManager : MonoBehaviour
       ReadLevels();
       Load();
 
-      LevelEvents.OnLevelWin += Save_Callback;
-      LevelEvents.OnLevelDataNeeded += LevelDataNeeded_Callback;
+        LevelEvents.OnLevelSelected += LevelSelected;
+        LevelEvents.OnLevelWin += Save_Callback;
+        LevelEvents.OnLevelDataNeeded += LevelDataNeeded_Callback;
    }
 
    void OnDestroy()
    {
-      LevelEvents.OnLevelWin -= Save_Callback;
-      LevelEvents.OnLevelDataNeeded -= LevelDataNeeded_Callback;
+        LevelEvents.OnLevelSelected -= LevelSelected;
+        LevelEvents.OnLevelWin -= Save_Callback;
+        LevelEvents.OnLevelDataNeeded -= LevelDataNeeded_Callback;
    }
 
    void ReadLevels()
@@ -68,4 +70,9 @@ public class LevelManager : MonoBehaviour
    {
       LevelEvents.OnSpawnLevelSelectionButtons?.Invoke(_levelSaveData.Data);
    }
+
+    void LevelSelected(int index)
+    {
+
+    }
 }

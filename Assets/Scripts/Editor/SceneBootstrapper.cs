@@ -1,18 +1,95 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
-public class SceneBootstrapper : MonoBehaviour
+using UnityEngine;
+using UnityEditor;
+using Unity.Burst;
+using Codice.Client.Common.GameUI;
+using UnityEngine.SceneManagement;
+using UnityEditor.SceneManagement;
+using System;
+using System.Linq;
+
+[InitializeOnLoad]
+public class SceneBootstrapper 
 {
-    // Start is called before the first frame update
-    void Start()
+    private const string PreviousSceneKey = "PreviousScene";
+    private const string ShouldLoadBootstrapKey = "ShouldLoadBootstrap";
+    private const string LoadBootstrapMenu = "GD101/Load Boot Scene On Play";
+    private const string DontLoadBootstrapMenu = "GD101/Don't Load Boot Scene On Play";
+    private static string BootstrapScene => EditorBuildSettings.scenes[0].path;
+
+    private static string PreviousScene
     {
-        
+        get => EditorPrefs.GetString(PreviousSceneKey);
+        set => EditorPrefs.SetString(PreviousScene, value);
     }
 
-    // Update is called once per frame
-    void Update()
+    private static bool ShouldLoadBootstrapScene
     {
-        
+        get => EditorPrefs.GetBool(ShouldLoadBootstrapKey, true);
+        set => EditorPrefs.SetBool(ShouldLoadBootstrapKey, value);
+
+    }
+
+    static SceneBootstrapper()
+    {
+        EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
+    }
+
+    static void OnPlayModeStateChanged(PlayModeStateChange playModeState)
+    {
+        if (!ShouldLoadBootstrapScene)
+        {
+            return;
+        }
+
+        switch (playModeState)
+        {
+            case PlayModeStateChange.ExitingEditMode:
+                PreviousScene = SceneManager.GetActiveScene().path;
+                if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()
+                    && IsSceneInBuildSettings(BootstrapScene))
+                {
+                    EditorSceneManager.OpenScene(BootstrapScene);
+                }
+                break;
+
+            case PlayModeStateChange.EnteredEditMode:
+                if (!string.IsNullOrEmpty(PreviousScene))
+                {
+                    EditorSceneManager.OpenScene(PreviousScene);
+                }
+                break;
+        }
+    }
+    static bool IsSceneInBuildSettings(string scenePath)
+    {
+        return !string.IsNullOrEmpty(scenePath)
+            && EditorBuildSettings.scenes.Any(scene => scene.path == scenePath);
+    }
+
+    [MenuItem(LoadBootstrapMenu)]
+    static void EnableBootstrapper()
+    {
+        ShouldLoadBootstrapScene = true;
+    }
+
+    [MenuItem(DontLoadBootstrapMenu)]
+    static void DisableBootstrapper()
+    {
+        ShouldLoadBootstrapScene = false;
+    }
+
+    [MenuItem(LoadBootstrapMenu)]
+    static bool ValidateEnableBootstrapper()
+    {
+        return !ShouldLoadBootstrapScene;
+    }
+
+    [MenuItem(DontLoadBootstrapMenu)]
+    static bool ValidateDisableBootstrapper()
+    {
+        return ShouldLoadBootstrapScene;
     }
 }
+
+
